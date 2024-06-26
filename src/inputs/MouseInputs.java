@@ -8,16 +8,13 @@ import main.GamePanel;
 
 public class MouseInputs implements MouseListener, MouseMotionListener {
     private GamePanel gamePanel;
-    private boolean isMouseInRectArea = false;
     public MouseInputs(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if(gamePanel.rect.contains(e.getPoint())) {
-            isMouseInRectArea = true;
-        }
+
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -46,8 +43,6 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if(isMouseInRectArea) {
-            gamePanel.setRectPos(e.getX(), e.getY());
-        }
+
     }
 }
