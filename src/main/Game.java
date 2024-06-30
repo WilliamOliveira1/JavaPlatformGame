@@ -1,16 +1,82 @@
 package main;
 
+import entities.Player;
+
+import java.awt.*;
+import java.text.MessageFormat;
+
 public class Game implements Runnable {
     private GameWindow gameWindow;
     private GamePanel gamePanel;
     private Thread gameThread;
-    private final int FPS_SET = 120;
+    private final int FPS_SET = 60;
+    private final int UPS_SET = 200;
+    protected final int playerInitPositionX = 200, playerInitPositionY = 200;
+    private Player player;
 
     public Game() {
-        gamePanel = new GamePanel();
+        initClasses();
+        gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
         gamePanel.requestFocus();
         startGameLoop();
+    }
+
+    public void update() {
+        player.update();
+    }
+
+    public void render(Graphics graphics) {
+        player.render(graphics);
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * <h4>
+     *     Run the frame rate and the update of the game
+     * <h4>
+     */
+    @Override
+    public void run() {
+        double timePerFrame = 1000000000.0 / FPS_SET;
+        double timePerUpdate = 1000000000.0 / UPS_SET;
+        double deltaU = 0;
+        double deltaF = 0;
+        int frames = 0;
+        int updates = 0;
+        long lastCheck = System.currentTimeMillis();
+        long previousTime = System.nanoTime();
+
+        while (true) {
+            long currentTime = System.nanoTime();
+
+            // deltaU will be 1.0 or more when the duration, since last update is equal or more than timePerUpdate
+            deltaU += (currentTime - previousTime) / timePerUpdate;
+            deltaF += (currentTime - previousTime) / timePerFrame;
+            previousTime = currentTime;
+
+            if(deltaF >= 1) {
+                gamePanel.repaint();
+                frames++;
+                deltaF--;
+            }
+
+            if(deltaU >= 1) {
+                update();
+                updates++;
+                deltaU--;
+            }
+
+            if(System.currentTimeMillis() - lastCheck >= 1000) {
+                lastCheck = System.currentTimeMillis();
+                System.out.println(MessageFormat.format("FPS: {0} | UPS: {1}", frames, updates));
+                frames = 0;
+                updates = 0;
+            }
+        }
     }
 
     private void startGameLoop() {
@@ -18,26 +84,11 @@ public class Game implements Runnable {
         gameThread.start();
     }
 
-    @Override
-    public void run() {
-        double timePerFrame = 1000000000.0 / FPS_SET;
-        int frames = 0;
-        long lastFrame = System.nanoTime();
-        long lastCheck = System.currentTimeMillis();
+    private void initClasses() {
+        player = new Player(playerInitPositionX, playerInitPositionY);
+    }
 
-        while (true) {
-            long now = System.nanoTime();
-            if(now - lastFrame >= timePerFrame) {
-                gamePanel.repaint();
-                lastFrame = now;
-                frames++;
-            }
-
-            if(System.currentTimeMillis() - lastCheck >= 1000) {
-                lastCheck = System.currentTimeMillis();
-                System.out.println("FPS: " + frames);
-                frames = 0;
-            }
-        }
+    public void windowFocusLost() {
+        player.resetDirBooleans();
     }
 }
