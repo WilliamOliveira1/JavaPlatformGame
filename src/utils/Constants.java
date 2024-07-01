@@ -10,14 +10,21 @@ public class Constants {
     }
 
     public static class GameValues {
-        public static final int PANEL_WIDTH = 1280;
-        public static final int PANEL_HEIGHT = 800;
+        public final static int TILES_DEFAULT_SIZE = 32;
+        public final static int TILES_IN_WIDTH = 26;
+        public final static int TILES_IN_HEIGHT = 14;
+        public final static float SCALE = 1.5f;
+        public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
+        public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
+        public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
         public static final int CHAR_WIDTH = 64;
         public static final int CHAR_HEIGHT = 40;
     }
 
     public static class ImageFiles {
-        public static final String PLAYER_FILE_PATH = "/images/player_sprites.png";
+        public static final String PLAYER_FILE_PATH = "player_sprites.png";
+        public static final String OUTSIDE_FILE_PATH = "outside_sprites.png";
+        public static final String LEVEL_ONE_DATA = "level_one_data.png";
     }
 
     public static class PlayerConstants {

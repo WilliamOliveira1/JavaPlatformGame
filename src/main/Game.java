@@ -1,12 +1,16 @@
 package main;
 
 import entities.Player;
+import levels.LevelManager;
 
 import java.awt.*;
 import java.text.MessageFormat;
 
+import static utils.Constants.GameValues.SCALE;
+
 public class Game implements Runnable {
     private GameWindow gameWindow;
+    private LevelManager levelManager;
     private GamePanel gamePanel;
     private Thread gameThread;
     private final int FPS_SET = 60;
@@ -24,10 +28,13 @@ public class Game implements Runnable {
 
     public void update() {
         player.update();
+        levelManager.update();
     }
 
     public void render(Graphics graphics) {
+        levelManager.draw(graphics);
         player.render(graphics);
+
     }
 
     public Player getPlayer() {
@@ -85,7 +92,8 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        player = new Player(playerInitPositionX, playerInitPositionY);
+        player = new Player(playerInitPositionX, playerInitPositionY, (int) (64 * SCALE), (int) (40 * SCALE));
+        levelManager = new LevelManager(this);
     }
 
     public void windowFocusLost() {

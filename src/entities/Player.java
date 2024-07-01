@@ -1,10 +1,9 @@
 package entities;
 
-import javax.imageio.ImageIO;
+import utils.LoadSave;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static utils.Constants.GameValues.CHAR_HEIGHT;
 import static utils.Constants.GameValues.CHAR_WIDTH;
@@ -19,19 +18,21 @@ public class Player extends Entity{
     private boolean up, down, right, left;
     private float playerSpeed = 2.0f;
 
-    public Player(float x, float y) {
-        super(x, y);
+    public Player(float x, float y, int width, int height) {
+        super(x, y, width, height);
         loadAnimation();
     }
 
     public void update() {
         updatePosition();
+        updateHitBox();
         updateAnimationTick();
         setAnimation();
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(animations[playerAction][animationIndex], (int)x, (int)y, CHAR_WIDTH*3, CHAR_HEIGHT*3, null);
+        graphics.drawImage(animations[playerAction][animationIndex], (int)x, (int)y, width, height, null);
+        drawHitBox(graphics);
     }
 
     /**
@@ -40,27 +41,14 @@ public class Player extends Entity{
      * <h4>
      */
     private void loadAnimation() {
-        InputStream inputStream = getClass().getResourceAsStream(PLAYER_FILE_PATH);
-        try {
-            if(inputStream != null) {
-                BufferedImage img = ImageIO.read(inputStream);
-                animations = new BufferedImage[9][6];
-                for (int j = 0; j < animations.length; j++) {
-                    for (int i = 0; i < animations[j].length; i++) {
-                        animations[j][i] = img.getSubimage(i * CHAR_WIDTH, j*CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT);
-                    }
-                }
-                inputStream.close();
-            }
-        } catch (Exception ex) {
-            System.out.println("Error loading image: " + ex.getMessage());
-        } finally {
-            try {
-                if(inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException ex) {
-                System.out.println("Error closing input stream: " + ex.getMessage());
+        BufferedImage img = LoadSave.GetSpriteAtlas(PLAYER_FILE_PATH);
+        if(img == null) {
+            return;
+        }
+        animations = new BufferedImage[9][6];
+        for (int j = 0; j < animations.length; j++) {
+            for (int i = 0; i < animations[j].length; i++) {
+                animations[j][i] = img.getSubimage(i * CHAR_WIDTH, j*CHAR_HEIGHT, CHAR_WIDTH, CHAR_HEIGHT);
             }
         }
     }
