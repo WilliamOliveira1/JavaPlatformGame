@@ -94,6 +94,7 @@ public class Game implements Runnable {
     private void initClasses() {
         player = new Player(playerInitPositionX, playerInitPositionY, (int) (64 * SCALE), (int) (40 * SCALE));
         levelManager = new LevelManager(this);
+        player.loadLvlData(levelManager.getCurrentLevel().getLvlData());
     }
 
     public void windowFocusLost() {

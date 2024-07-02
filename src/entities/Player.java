@@ -5,10 +5,10 @@ import utils.LoadSave;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static utils.Constants.GameValues.CHAR_HEIGHT;
-import static utils.Constants.GameValues.CHAR_WIDTH;
+import static utils.Constants.GameValues.*;
 import static utils.Constants.ImageFiles.PLAYER_FILE_PATH;
 import static utils.Constants.PlayerConstants.*;
+import static utils.HelpMethods.CanMoveHere;
 
 public class Player extends Entity{
     private BufferedImage[][] animations;
@@ -17,21 +17,23 @@ public class Player extends Entity{
     private boolean isPlayerMoving = false, isPlayerAttacking = false;
     private boolean up, down, right, left;
     private float playerSpeed = 2.0f;
+    private float xDrawOffset = 21 * SCALE, yDrawOffset = 4 * SCALE;
+    private int[][] lvlData;
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimation();
+        initHitBox(x, y, 20*SCALE, 28 * SCALE);
     }
 
     public void update() {
         updatePosition();
-        updateHitBox();
         updateAnimationTick();
         setAnimation();
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(animations[playerAction][animationIndex], (int)x, (int)y, width, height, null);
+        graphics.drawImage(animations[playerAction][animationIndex], (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
         drawHitBox(graphics);
     }
 
@@ -53,6 +55,10 @@ public class Player extends Entity{
         }
     }
 
+    public void loadLvlData(int[][] lvlData) {
+        this.lvlData = lvlData;
+    }
+
     /**
      * <h4>
      *     Change the player position
@@ -60,13 +66,22 @@ public class Player extends Entity{
      */
     private void updatePosition() {
         isPlayerMoving = false;
+        if(!left && !right && !up && !down) {
+            return;
+        }
+
+        float xSpeed = 0, ySpeed = 0;
         if (left ^ right) {
-            x += left ? -playerSpeed : playerSpeed;
-            isPlayerMoving = true;
+            xSpeed = left ? -playerSpeed : playerSpeed;
         }
 
         if(up ^ down) {
-            y += up ? -playerSpeed : playerSpeed;
+            ySpeed = up ? -playerSpeed : playerSpeed;
+        }
+
+        if(CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, hitbox.width, hitbox.height, lvlData)) {
+            hitbox.x += xSpeed;
+            hitbox.y += ySpeed;
             isPlayerMoving = true;
         }
     }
