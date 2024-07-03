@@ -3,7 +3,6 @@ package entities;
 import utils.LoadSave;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import static utils.Constants.GameValues.*;
@@ -43,7 +42,6 @@ public class Player extends Entity{
 
     public void render(Graphics graphics) {
         graphics.drawImage(animations[playerAction][animationIndex], (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
-//        drawHitBox(graphics);
     }
 
     /**

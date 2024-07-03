@@ -1,22 +1,20 @@
 package main;
 
-import entities.Player;
-import levels.LevelManager;
+import gamestates.GameState;
+import gamestates.Menu;
+import gamestates.Playing;
 
 import java.awt.*;
 import java.text.MessageFormat;
 
-import static utils.Constants.GameValues.SCALE;
-
 public class Game implements Runnable {
     private GameWindow gameWindow;
-    private LevelManager levelManager;
     private GamePanel gamePanel;
     private Thread gameThread;
     private final int FPS_SET = 60;
     private final int UPS_SET = 200;
-    protected final int playerInitPositionX = 200, playerInitPositionY = 200;
-    private Player player;
+    private Menu menu;
+    private Playing playing;
 
     public Game() {
         initClasses();
@@ -27,18 +25,17 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        player.update();
-        levelManager.update();
+        switch (GameState.state) {
+            case MENU -> menu.update();
+            case PLAYING -> playing.update();
+        }
     }
 
     public void render(Graphics graphics) {
-        levelManager.draw(graphics);
-        player.render(graphics);
-
-    }
-
-    public Player getPlayer() {
-        return player;
+        switch (GameState.state) {
+            case MENU -> menu.draw(graphics);
+            case PLAYING -> playing.draw(graphics);
+        }
     }
 
     /**
@@ -92,12 +89,21 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        player = new Player(playerInitPositionX, playerInitPositionY, (int) (64 * SCALE), (int) (40 * SCALE));
-        levelManager = new LevelManager(this);
-        player.loadLvlData(levelManager.getCurrentLevel().getLvlData());
+        menu = new Menu(this);
+        playing = new Playing(this);
     }
 
     public void windowFocusLost() {
-        player.resetDirBooleans();
+        if(GameState.state == GameState.PLAYING) {
+            playing.getPlayer().resetDirBooleans();
+        }
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public Playing getPlaying() {
+        return playing;
     }
 }
