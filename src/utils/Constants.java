@@ -46,7 +46,6 @@ public class Constants {
                 case HIT -> spriteAmount = 4;
                 case IDLE -> spriteAmount = 5;
                 case RUNNING -> spriteAmount = 6;
-                case FALLING -> spriteAmount = 9;
             }
             return spriteAmount;
         }
