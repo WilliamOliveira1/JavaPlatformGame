@@ -1,1 +1,2 @@
-# JavaPlatformGame
+# Platform game made using Java
+

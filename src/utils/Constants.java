@@ -2,6 +2,15 @@ package utils;
 
 public class Constants {
 
+    public static class UI {
+        public static class Buttons {
+            public static final int B_WIDTH_DEFAULT = 140;
+            public static final int B_HEIGHT_DEFAULT = 56;
+            public static final int B_WIDTH = (int)(B_WIDTH_DEFAULT * GameValues.SCALE);
+            public static final int B_HEIGHT = (int)(B_HEIGHT_DEFAULT * GameValues.SCALE);
+        }
+    }
+
     public static class Directions {
         public static final int LEFT = 0;
         public static final int UP = 1;
@@ -25,6 +34,8 @@ public class Constants {
         public static final String PLAYER_FILE_PATH = "player_sprites.png";
         public static final String OUTSIDE_FILE_PATH = "outside_sprites.png";
         public static final String LEVEL_ONE_DATA = "level_one_data.png";
+        public static final String MENU_BUTTONS = "button_atlas.png";
+        public static final String MENU_BACKGROUND = "menu_background.png";
     }
 
     public static class PlayerConstants {
