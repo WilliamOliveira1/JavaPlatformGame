@@ -3,6 +3,7 @@ package inputs;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Objects;
 
 import gamestates.GameState;
 import main.GamePanel;
@@ -51,5 +52,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mouseDragged(MouseEvent e) {}
+    public void mouseDragged(MouseEvent event) {
+        if (Objects.requireNonNull(GameState.state) == GameState.PLAYING) {
+            gamePanel.getGame().getPlaying().mouseDragged(event);
+        }
+    }
 }

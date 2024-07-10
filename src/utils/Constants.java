@@ -9,13 +9,25 @@ public class Constants {
             public static final int B_WIDTH = (int)(B_WIDTH_DEFAULT * GameValues.SCALE);
             public static final int B_HEIGHT = (int)(B_HEIGHT_DEFAULT * GameValues.SCALE);
         }
-    }
 
-    public static class Directions {
-        public static final int LEFT = 0;
-        public static final int UP = 1;
-        public static final int RIGHT = 2;
-        public static final int DOWN = 3;
+        public static class PauseButtons {
+            public static final int SOUND_SIZE_DEFAULT = 42;
+            public static final int SOUND_SIZE = (int)(SOUND_SIZE_DEFAULT * GameValues.SCALE);
+        }
+
+        public static class UrmButtons {
+            public static final int URM_DEFAULT_SIZE = 56;
+            public static final int URM_SIZE = (int)(URM_DEFAULT_SIZE * GameValues.SCALE);
+        }
+
+        public static class VolumeButtons {
+            public static final int VOLUME_DEFAULT_WIDTH = 28;
+            public static final int VOLUME_DEFAULT_HEIGHT = 44;
+            public static final int SLIDER_DEFAULT_WIDTH = 215;
+            public static final int VOLUME_WIDTH = (int)(VOLUME_DEFAULT_WIDTH * GameValues.SCALE);
+            public static final int VOLUME_HEIGHT = (int)(VOLUME_DEFAULT_HEIGHT * GameValues.SCALE);
+            public static final int SLIDER_WIDTH = (int)(SLIDER_DEFAULT_WIDTH * GameValues.SCALE);
+        }
     }
 
     public static class GameValues {
@@ -36,6 +48,10 @@ public class Constants {
         public static final String LEVEL_ONE_DATA = "level_one_data.png";
         public static final String MENU_BUTTONS = "button_atlas.png";
         public static final String MENU_BACKGROUND = "menu_background.png";
+        public static final String PAUSE_BACKGROUND = "pause_menu.png";
+        public static final String SOUND_BUTTONS = "sound_button.png";
+        public static final String URM_BUTTONS = "urm_buttons.png";
+        public static final String VOLUME_BUTTONS = "volume_buttons.png";
     }
 
     public static class PlayerConstants {
